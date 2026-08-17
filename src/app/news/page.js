@@ -1,12 +1,9 @@
-import prisma from '@/lib/prisma'
+import { listNews } from '@/lib/db'
 
 export default async function NewsPage() {
   let items = []
   try {
-    items = await prisma.news.findMany({
-      where: { published: true },
-      orderBy: [{ order: 'asc' }, { date: 'desc' }],
-    })
+    items = await listNews({ published: true })
   } catch (e) {}
 
   return (

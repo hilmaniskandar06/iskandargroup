@@ -257,7 +257,7 @@ h3 { font-size: 1.75rem; }
 .card {
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 4px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
   transition: transform var(--transition-normal);
   cursor: pointer;
@@ -324,7 +324,7 @@ h3 { font-size: 1.75rem; }
   margin: 40px auto;
   padding: 30px;
   background: white;
-  border-radius: 10px;
+  border-radius: 6px;
   box-shadow: 0 5px 30px rgba(0,0,0,0.05);
 }
 
@@ -342,7 +342,7 @@ h3 { font-size: 1.75rem; }
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: 4px;
   font-family: inherit;
   font-size: 1rem;
 }
@@ -358,7 +358,7 @@ h3 { font-size: 1.75rem; }
   color: white;
   padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -371,7 +371,7 @@ h3 { font-size: 1.75rem; }
 
 .alert {
   padding: 15px;
-  border-radius: 6px;
+  border-radius: 4px;
   margin-bottom: 20px;
   background: #d4edda;
   color: #155724;

@@ -1,4 +1,11 @@
-import prisma from '@/lib/prisma'
+import {
+  getPageContent,
+  listBusinessCategories,
+  listStats,
+  listNews,
+  listCsrPrograms,
+  listInvestorContent,
+} from '@/lib/db'
 import { getAdminSession } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import {
@@ -25,6 +32,8 @@ const defaults = {
   homeDesc: 'Our Businesses',
   homeSubDesc: 'CT Corp is Indonesia\'s leading consumer-centric diversified group & ecosystem employing more than 100,000 people regionally.',
   homeHeroImg: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
+  siteLogo: '',
+  statsBgImg: '',
   whoWeAreText: 'Our Founder Prof. Dr. Chairul Tanjung grew CT Corp to be a massive business ecosystem.',
   whoWeAreImg: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop',
   privacyText: 'Protecting the security and privacy of your personal data is important to CT Corp.',
@@ -47,18 +56,12 @@ export default async function AdminPage(props) {
   const editInvId = searchParams?.editInv ? Number(searchParams.editInv) : null
 
   const [content, businesses, stats, news, csr, investors] = await Promise.all([
-    prisma.pageContent.findFirst().catch(() => null),
-    prisma.businessCategory.findMany({
-      include: { items: { orderBy: { order: 'asc' } } },
-      orderBy: { order: 'asc' },
-    }).catch(() =>
-      // fallback for stale Prisma client that doesn't know about 'items' relation yet
-      prisma.businessCategory.findMany({ orderBy: { order: 'asc' } }).catch(() => [])
-    ),
-    prisma.stat.findMany({ orderBy: { order: 'asc' } }).catch(() => []),
-    prisma.news.findMany({ orderBy: [{ order: 'asc' }, { date: 'desc' }] }).catch(() => []),
-    prisma.csrProgram.findMany({ orderBy: [{ order: 'asc' }, { date: 'desc' }] }).catch(() => []),
-    prisma.investorContent.findMany({ orderBy: [{ order: 'asc' }, { createdAt: 'desc' }] }).catch(() => []),
+    getPageContent().catch(() => null),
+    listBusinessCategories({ withItems: true }).catch(() => []),
+    listStats().catch(() => []),
+    listNews().catch(() => []),
+    listCsrPrograms().catch(() => []),
+    listInvestorContent().catch(() => []),
   ])
 
   const page = { ...defaults, ...(content || {}) }
@@ -111,9 +114,20 @@ export default async function AdminPage(props) {
               <div className="form-group">
                 <label className="form-label">Unggah Gambar Banner Hero (Supabase Storage)</label>
                 <input type="file" className="form-input" name="homeHeroImgFile" accept="image/*" />
+                {page.homeHeroImg && <img src={page.homeHeroImg} alt="" style={{ marginTop: '8px', height: '90px', borderRadius: '4px', objectFit: 'cover' }} />}
               </div>
-              <div className="form-group"><label className="form-label">Atau Masukkan URL Gambar Hero</label>
-                <input className="form-input" name="homeHeroImg" defaultValue={page.homeHeroImg} /></div>
+
+              <div className="form-group">
+                <label className="form-label">Unggah Logo Website</label>
+                <input type="file" className="form-input" name="siteLogoFile" accept="image/*" />
+                {page.siteLogo && <img src={page.siteLogo} alt="" style={{ marginTop: '8px', height: '54px', borderRadius: '4px', objectFit: 'contain', background: '#111', padding: '8px' }} />}
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Unggah Background Statistik</label>
+                <input type="file" className="form-input" name="statsBgImgFile" accept="image/*" />
+                {page.statsBgImg && <img src={page.statsBgImg} alt="" style={{ marginTop: '8px', height: '90px', borderRadius: '4px', objectFit: 'cover' }} />}
+              </div>
               
               <div className="form-group"><label className="form-label">Judul Bagian Bisnis (Bisnis Kami)</label>
                 <input className="form-input" name="homeDesc" defaultValue={page.homeDesc} /></div>
@@ -128,9 +142,8 @@ export default async function AdminPage(props) {
               <div className="form-group">
                 <label className="form-label">Unggah Foto Pendiri (Supabase Storage)</label>
                 <input type="file" className="form-input" name="whoWeAreImgFile" accept="image/*" />
+                {page.whoWeAreImg && <img src={page.whoWeAreImg} alt="" style={{ marginTop: '8px', height: '90px', borderRadius: '4px', objectFit: 'cover' }} />}
               </div>
-              <div className="form-group"><label className="form-label">Atau URL Foto Pendiri</label>
-                <input className="form-input" name="whoWeAreImg" defaultValue={page.whoWeAreImg} /></div>
 
               <hr style={{ margin: '30px 0' }} />
               <h4 style={{ color: '#333', marginBottom: '10px' }}>Halaman Bisnis &amp; Hubungan Investor</h4>
@@ -164,13 +177,9 @@ export default async function AdminPage(props) {
                     <input className="form-input" name="title" required defaultValue={editBiz?.title || ''} placeholder="Contoh: Financial Services" /></div>
                   <div className="form-group">
                     <label className="form-label">Foto / Gambar Kategori</label>
+                    <input type="hidden" name="existingImageUrl" value={editBiz?.imageUrl || ''} />
                     <input type="file" className="form-input" name="catImageFile" accept="image/*" />
-                    <div style={{ fontSize: '0.8rem', color: '#888', marginTop: '4px' }}>*Atau isi URL di bawah ini</div>
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">URL Foto Kategori</label>
-                    <input className="form-input" name="catImageUrl" defaultValue={editBiz?.imageUrl || ''} placeholder="https://..." />
-                    {editBiz?.imageUrl && <img src={editBiz.imageUrl} alt="" style={{ marginTop: '8px', height: '80px', borderRadius: '6px', objectFit: 'cover' }} />}
+                    {editBiz?.imageUrl && <img src={editBiz.imageUrl} alt="" style={{ marginTop: '8px', height: '80px', borderRadius: '4px', objectFit: 'cover' }} />}
                   </div>
                   <div className="form-group"><label className="form-label">Urutan Tampil</label>
                     <input className="form-input" type="number" name="order" defaultValue={editBiz?.order ?? 0} /></div>
@@ -229,15 +238,11 @@ export default async function AdminPage(props) {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginTop: '14px', alignItems: 'start' }}>
                   <div className="form-group" style={{ marginBottom: 0 }}>
                     <label className="form-label">📁 Unggah Logo (Supabase Storage)</label>
+                    <input type="hidden" name="existingImageUrl" value={editItem?.imageUrl || ''} />
                     <input type="file" className="form-input" name="imageFile" accept="image/*" />
-                    <div style={{ fontSize: '0.78rem', color: '#888', marginTop: '4px' }}>*Prioritas lebih tinggi dari URL di samping</div>
-                  </div>
-                  <div className="form-group" style={{ marginBottom: 0 }}>
-                    <label className="form-label">URL Logo / Gambar</label>
-                    <input className="form-input" name="imageUrl" defaultValue={editItem?.imageUrl || ''} placeholder="https://..." />
                     {editItem?.imageUrl && (
-                      <div style={{ marginTop: '8px', padding: '8px', background: '#1a1a2e', borderRadius: '6px', display: 'inline-block' }}>
-                        <img src={editItem.imageUrl} alt="" style={{ maxHeight: '40px', maxWidth: '120px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+                      <div style={{ marginTop: '8px', padding: '8px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '4px', display: 'inline-block' }}>
+                        <img src={editItem.imageUrl} alt="" style={{ maxHeight: '44px', maxWidth: '120px', objectFit: 'contain' }} />
                       </div>
                     )}
                   </div>
@@ -342,11 +347,10 @@ export default async function AdminPage(props) {
                   <input className="form-input" name="slug" defaultValue={editNews?.slug || ''} placeholder="contoh-slug-berita" /></div>
                 <div className="form-group">
                   <label className="form-label">Unggah Gambar Sampul (Supabase Storage)</label>
+                  <input type="hidden" name="existingImageUrl" value={editNews?.imageUrl || ''} />
                   <input type="file" className="form-input" name="imageFile" accept="image/*" />
-                  <div style={{fontSize: '0.8rem', color: '#666', marginTop: '4px'}}>*Atau gunakan tautan URL gambar di bawah</div>
+                  {editNews?.imageUrl && <img src={editNews.imageUrl} alt="" style={{ marginTop: '8px', height: '80px', borderRadius: '4px', objectFit: 'cover' }} />}
                 </div>
-                <div className="form-group"><label className="form-label">URL Gambar Sampul</label>
-                  <input className="form-input" name="imageUrl" defaultValue={editNews?.imageUrl || ''} placeholder="https://..." /></div>
                 <div className="form-group"><label className="form-label">Ringkasan Berita (Excerpt)</label>
                   <textarea className="form-textarea" style={{ minHeight: '80px' }} name="excerpt" defaultValue={editNews?.excerpt || ''} placeholder="Ringkasan singkat berita..." /></div>
                 <div className="form-group"><label className="form-label">Konten Lengkap Berita</label>
@@ -401,11 +405,10 @@ export default async function AdminPage(props) {
                   <input className="form-input" name="category" defaultValue={editCsr?.category || ''} placeholder="Pendidikan, Sosial, Kesehatan..." /></div>
                 <div className="form-group">
                   <label className="form-label">Unggah Gambar Sampul (Supabase Storage)</label>
+                  <input type="hidden" name="existingImageUrl" value={editCsr?.imageUrl || ''} />
                   <input type="file" className="form-input" name="imageFile" accept="image/*" />
-                  <div style={{fontSize: '0.8rem', color: '#666', marginTop: '4px'}}>*Atau gunakan tautan URL gambar di bawah</div>
+                  {editCsr?.imageUrl && <img src={editCsr.imageUrl} alt="" style={{ marginTop: '8px', height: '80px', borderRadius: '4px', objectFit: 'cover' }} />}
                 </div>
-                <div className="form-group"><label className="form-label">URL Gambar Sampul</label>
-                  <input className="form-input" name="imageUrl" defaultValue={editCsr?.imageUrl || ''} placeholder="https://..." /></div>
                 <div className="form-group"><label className="form-label">Ringkasan Program (Excerpt)</label>
                   <textarea className="form-textarea" style={{ minHeight: '80px' }} name="excerpt" defaultValue={editCsr?.excerpt || ''} placeholder="Ringkasan singkat program..." /></div>
                 <div className="form-group"><label className="form-label">Konten Lengkap Program</label>

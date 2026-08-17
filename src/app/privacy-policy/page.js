@@ -1,9 +1,9 @@
-import prisma from '@/lib/prisma'
+import { getPageContent } from '@/lib/db'
 
 export default async function PrivacyPolicy() {
   let content = null;
   try {
-    content = await prisma.pageContent.findFirst();
+    content = await getPageContent();
   } catch (e) {
     // default
   }

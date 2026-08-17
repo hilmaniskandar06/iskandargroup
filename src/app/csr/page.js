@@ -1,9 +1,9 @@
-import prisma from '@/lib/prisma'
+import { listCsrPrograms } from '@/lib/db'
 
 export default async function CSRPage() {
   let items = []
   try {
-    items = await prisma.csrProgram.findMany({ orderBy: [{ order: 'asc' }, { date: 'desc' }] })
+    items = await listCsrPrograms()
   } catch (e) {}
 
   return (

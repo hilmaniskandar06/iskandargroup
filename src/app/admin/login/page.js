@@ -28,6 +28,12 @@ export default async function AdminLoginPage(props) {
           </div>
         )}
 
+        {searchParams?.serviceKey === '1' && (
+          <div style={{ padding: '12px', marginBottom: '20px', borderRadius: '6px', background: '#fee2e2', color: '#991b1b', fontSize: '0.9rem' }}>
+            SUPABASE_SERVICE_ROLE_KEY belum valid. Isi key tersebut di .env.local, lalu restart dev server.
+          </div>
+        )}
+
         <form action={loginAction}>
           <div style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', fontWeight: 600, marginBottom: '6px', fontSize: '0.9rem' }}>Alamat Email</label>

@@ -1,18 +1,15 @@
-import prisma from '@/lib/prisma'
+import { getPageContent, listBusinessCategories, listStats } from '@/lib/db'
 
 export default async function Home() {
-  // Try fetching content, provide defaults if db is empty or not seeded
   let content = null;
   let businesses = [];
   let stats = [];
 
   try {
-    content = await prisma.pageContent.findFirst();
-    businesses = await prisma.businessCategory.findMany({ orderBy: { order: 'asc' } });
-    stats = await prisma.stat.findMany({ orderBy: { order: 'asc' } });
-  } catch (e) {
-    console.log("Database not initialized yet, using fallback data.");
-  }
+    content = await getPageContent();
+    businesses = await listBusinessCategories();
+    stats = await listStats();
+  } catch (e) {}
 
   const data = content || {
     homeTitle: 'Untuk Indonesia\nyang lebih baik',
@@ -21,75 +18,74 @@ export default async function Home() {
     homeHeroImg: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
   };
 
-  const defaultBusinesses = [
-    { title: 'Layanan Keuangan', imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=500&auto=format&fit=crop' },
-    { title: 'Media & Hiburan', imageUrl: 'https://images.unsplash.com/photo-1495020689067-958852a7765e?q=80&w=500&auto=format&fit=crop' },
-    { title: 'Perhotelan & Wisata', imageUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=500&auto=format&fit=crop' },
-    { title: 'Hiburan & Properti', imageUrl: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=500&auto=format&fit=crop' },
-    { title: 'Ritel & Gaya Hidup', imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=500&auto=format&fit=crop' },
-  ];
-
-  const defaultStats = [
+  const displayStats = stats.length > 0 ? stats : [
     { value: '100,000+', label: 'KARYAWAN DI SELURUH NEGERI' },
     { value: '55+', label: 'KOTA DI INDONESIA' },
     { value: '35+', label: 'TAHUN PERJALANAN' },
     { value: '200 Juta +', label: 'PELANGGAN SETIA' },
   ];
 
-  const displayBusinesses = businesses.length > 0 ? businesses : defaultBusinesses;
-  const displayStats = stats.length > 0 ? stats : defaultStats;
-
   return (
     <main>
+      {/* Hero */}
       <section className="hero" style={{ backgroundImage: `url('${data.homeHeroImg}')` }}>
         <div className="hero-content">
           <h1 className="hero-title" dangerouslySetInnerHTML={{ __html: data.homeTitle.replace(/\n/g, '<br/>') }}></h1>
         </div>
       </section>
 
-      <section className="section container">
-        <h2>{data.homeDesc}</h2>
-        <p style={{ color: 'var(--color-gray)', marginBottom: 'var(--spacing-xl)', maxWidth: '800px' }}>
-          {data.homeSubDesc}
-        </p>
+      {/* Business categories */}
+      {businesses.length > 0 && (
+        <section className="section container">
+          <h2>{data.homeDesc || 'Bisnis Kami'}</h2>
+          <p style={{ color: 'var(--color-gray)', marginBottom: 'var(--spacing-xl)', maxWidth: '800px' }}>
+            {data.homeSubDesc}
+          </p>
 
-        <div className="grid-4">
-          {displayBusinesses.map((biz, idx) => {
-            const targetHref = biz.linkUrl || '/business';
-            const isExternal = targetHref.startsWith('http') || targetHref.startsWith('//');
-            return (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+            gap: '20px',
+          }}>
+            {businesses.map((biz) => (
               <a
-                href={targetHref}
-                key={biz.id || idx}
-                target={isExternal ? '_blank' : undefined}
-                rel={isExternal ? 'noopener noreferrer' : undefined}
-                className="card"
-                style={{ textDecoration: 'none', color: 'inherit', display: 'block', cursor: 'pointer' }}
+                href="/business"
+                key={biz.id}
+                aria-label={biz.title}
+                style={{ textDecoration: 'none', color: 'inherit', display: 'block', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.10)', transition: 'transform .2s, box-shadow .2s', background: '#111' }}
               >
-                <img src={biz.imageUrl} alt={biz.title} />
-                <div className="card-content">
-                  <h3 className="card-title">{biz.title}</h3>
-                  {biz.desc && <p style={{ fontSize: '0.85rem', color: 'var(--color-gray)', marginTop: '6px', lineHeight: '1.4' }}>{biz.desc}</p>}
+                <div style={{ position: 'relative', width: '100%', height: '220px', overflow: 'hidden', background: '#111' }}>
+                  {biz.imageUrl
+                    ? <img src={biz.imageUrl} alt={biz.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform .4s' }} />
+                    : <div style={{ width: '100%', height: '100%', background: '#1a1a2e', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', color: '#fff', fontWeight: 700 }}>{biz.title.charAt(0)}</div>
+                  }
                 </div>
               </a>
-            );
-          })}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
-      <section className="stats-section">
+      {/* Stats */}
+      <section
+        className="stats-section"
+        style={data.statsBgImg ? {
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.48)), url('${data.statsBgImg}')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        } : undefined}
+      >
         <div className="container">
-          <h2 style={{ color: 'white', opacity: 0.9, textAlign: 'center', fontSize: '2.5rem', marginBottom: '3rem' }}>Kekuatan Kami Dalam Angka</h2>
           <div className="stats-grid">
-            {displayStats.map((stat, idx) => (
-              <div key={idx} style={{ padding: '20px' }}>
-                <div className="stat-value" style={{ color: 'white' }}>{stat.value}</div>
-                <div className="stat-label" style={{ color: 'white', opacity: 0.7 }}>{stat.label}</div>
+            {displayStats.map((stat, i) => (
+              <div key={stat.id || i} className="stat-item">
+                <div className="stat-value" style={data.statsBgImg ? { color: '#fff' } : undefined}>{stat.value}</div>
+                <div className="stat-label" style={data.statsBgImg ? { color: 'rgba(255,255,255,0.82)' } : undefined}>{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
     </main>
-  );
+  )
 }

@@ -13,7 +13,7 @@ const links = [
   { href: '/admin', label: 'Admin' },
 ]
 
-export default function Navbar() {
+export default function Navbar({ logoSrc = '/images/home.jpeg' }) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -21,10 +21,10 @@ export default function Navbar() {
       <nav className="navbar">
         <Link href="/" className="nav-logo-wrap">
           <img
-            src="/images/home.jpeg"
+            src={logoSrc}
             alt="CT CORP"
             className="logo"
-            style={{ objectFit: 'none', objectPosition: '10% 5%', width: '150px', height: '60px' }}
+            style={{ objectFit: 'contain', width: '150px', height: '60px' }}
           />
         </Link>
 
@@ -57,9 +57,9 @@ export default function Navbar() {
       <aside className={open ? 'drawer open' : 'drawer'}>
         <div style={{ padding: '20px 20px 10px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <img
-            src="/images/home.jpeg"
+            src={logoSrc}
             alt="CT CORP"
-            style={{ objectFit: 'none', objectPosition: '10% 5%', width: '130px', height: '50px' }}
+            style={{ objectFit: 'contain', width: '130px', height: '50px' }}
           />
           <button aria-label="Close" onClick={() => setOpen(false)}
             style={{ background: 'transparent', border: 'none', color: 'white', fontSize: '28px', lineHeight: 1, cursor: 'pointer' }}>×</button>

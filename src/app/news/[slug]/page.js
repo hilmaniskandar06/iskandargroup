@@ -1,13 +1,10 @@
-import prisma from '@/lib/prisma'
+import { getNewsBySlug, listNewsSlugs } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
 export async function generateStaticParams() {
   try {
-    const items = await prisma.news.findMany({
-      where: { published: true },
-      select: { slug: true },
-    })
+    const items = await listNewsSlugs()
     return items.map(n => ({ slug: n.slug }))
   } catch {
     return []
@@ -21,7 +18,7 @@ export default async function NewsDetailPage({ params }) {
 
   let item = null
   try {
-    item = await prisma.news.findUnique({ where: { slug } })
+    item = await getNewsBySlug(slug)
   } catch (e) {}
 
   if (!item || !item.published) notFound()

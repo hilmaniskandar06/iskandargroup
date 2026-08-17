@@ -1,14 +1,11 @@
-import prisma from '@/lib/prisma'
+import { getPageContent, listBusinessCategories } from '@/lib/db'
 
 export default async function WhoWeAre() {
   let content = null;
   let businesses = [];
   try {
-    content = await prisma.pageContent.findFirst();
-    businesses = await prisma.businessCategory.findMany({
-      include: { items: { orderBy: { order: 'asc' } } },
-      orderBy: { order: 'asc' },
-    });
+    content = await getPageContent();
+    businesses = await listBusinessCategories({ withItems: true });
   } catch (e) {
     // default
   }
@@ -27,7 +24,7 @@ export default async function WhoWeAre() {
       <section className="section container">
         {/* Founder / About section */}
         <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap', alignItems: 'flex-start', marginBottom: '60px' }}>
-          <img src={founderImg} alt="Founder" style={{ borderRadius: '8px', width: '300px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }} />
+          <img src={founderImg} alt="Founder" style={{ borderRadius: '4px', width: '300px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }} />
           <div style={{ flex: 1, minWidth: '300px' }}>
             <p style={{ fontSize: '1.1rem', color: 'var(--color-gray)', whiteSpace: 'pre-wrap', lineHeight: '1.8' }}>{text}</p>
           </div>
@@ -47,23 +44,16 @@ export default async function WhoWeAre() {
                 <div key={cat.id} style={{ marginBottom: '48px' }}>
                   {/* Category header */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-                    {cat.imageUrl && (
-                      <img src={cat.imageUrl} alt={cat.title} style={{ width: '36px', height: '36px', objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} />
-                    )}
                     <h3 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0 }}>{cat.title}</h3>
                     <div style={{ flex: 1, height: '1px', background: '#e5e7eb' }} />
                   </div>
 
-                  {/* Brand logo grid — no background on container, background per-item only */}
+                  {/* Brand logo gallery */}
                   {hasItems ? (
                     <div style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: '1px',
-                      background: '#e5e7eb',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '8px',
-                      overflow: 'hidden',
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(132px, 1fr))',
+                      gap: '12px',
                     }}>
                       {cat.items.map(item => {
                         const isExt = item.linkUrl && (item.linkUrl.startsWith('http') || item.linkUrl.startsWith('//'))
@@ -75,15 +65,14 @@ export default async function WhoWeAre() {
                             target={isExt ? '_blank' : undefined}
                             rel={isExt ? 'noopener noreferrer' : undefined}
                             style={{
-                              width: 'calc(100% / 6 - 1px)',
-                              minWidth: '130px',
-                              flex: '0 0 auto',
-                              background: '#1a1a2e',
+                              aspectRatio: '1 / 1',
+                              background: '#fff',
+                              border: '1px solid #e5e7eb',
+                              borderRadius: '4px',
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              padding: '24px 16px',
-                              minHeight: '110px',
+                              padding: '18px',
                               cursor: item.linkUrl ? 'pointer' : 'default',
                               textDecoration: 'none',
                               boxSizing: 'border-box',
@@ -93,7 +82,7 @@ export default async function WhoWeAre() {
                             <img
                               src={item.imageUrl}
                               alt={item.title}
-                              style={{ maxWidth: '120px', maxHeight: '52px', objectFit: 'contain' }}
+                              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                             />
                           </Tag>
                         )

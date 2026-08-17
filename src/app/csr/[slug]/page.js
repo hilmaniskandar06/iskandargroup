@@ -1,10 +1,10 @@
-import prisma from '@/lib/prisma'
+import { getCsrBySlug, listCsrSlugs } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
 export async function generateStaticParams() {
   try {
-    const items = await prisma.csrProgram.findMany({ select: { slug: true } })
+    const items = await listCsrSlugs()
     return items.map(c => ({ slug: c.slug }))
   } catch {
     return []
@@ -17,7 +17,7 @@ export default async function CsrDetailPage({ params }) {
 
   let item = null
   try {
-    item = await prisma.csrProgram.findUnique({ where: { slug } })
+    item = await getCsrBySlug(slug)
   } catch (e) {}
 
   if (!item) notFound()
