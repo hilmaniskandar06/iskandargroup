@@ -10,7 +10,6 @@ const links = [
   { href: '/investor', label: 'Investor' },
   { href: '/news', label: 'Berita' },
   { href: '/csr', label: 'CSR' },
-  { href: '/admin', label: 'Admin' },
 ]
 
 export default function Navbar({ logoSrc = '/images/home.jpeg' }) {
@@ -22,7 +21,7 @@ export default function Navbar({ logoSrc = '/images/home.jpeg' }) {
         <Link href="/" className="nav-logo-wrap">
           <img
             src={logoSrc}
-            alt="CT CORP"
+            alt="PT. Iskandar Group Indonesia"
             className="logo"
             style={{ objectFit: 'contain', width: '150px', height: '60px' }}
           />
@@ -58,7 +57,7 @@ export default function Navbar({ logoSrc = '/images/home.jpeg' }) {
         <div style={{ padding: '20px 20px 10px 20px', borderBottom: '1px solid rgba(255,255,255,0.1)', marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <img
             src={logoSrc}
-            alt="CT CORP"
+            alt="PT. Iskandar Group Indonesia"
             style={{ objectFit: 'contain', width: '130px', height: '50px' }}
           />
           <button aria-label="Close" onClick={() => setOpen(false)}

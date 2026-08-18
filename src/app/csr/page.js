@@ -11,7 +11,7 @@ export default async function CSRPage() {
       <section className="section-primary" style={{ padding: '80px 0 60px 0' }}>
         <div className="container">
           <h1 style={{ fontSize: '3rem', marginBottom: '12px' }}>Tanggung Jawab Sosial (CSR)</h1>
-          <p style={{ fontSize: '1.1rem', opacity: 0.85 }}>Komitmen CT Corp dalam menciptakan dampak positif berkelanjutan bagi masyarakat dan lingkungan.</p>
+          <p style={{ fontSize: '1.1rem', opacity: 0.85 }}>Komitmen PT. Iskandar Group Indonesia dalam menciptakan dampak positif berkelanjutan bagi masyarakat dan lingkungan.</p>
         </div>
       </section>
 

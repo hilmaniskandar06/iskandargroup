@@ -23,7 +23,6 @@ import {
   updateInvestorContent,
   updateNews,
   updateStat,
-  upsertAdminAuthUser,
   upsertPageContent,
 } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
@@ -79,18 +78,6 @@ export async function loginAction(formData) {
   } catch {
     redirect('/admin/login?error=1')
   }
-}
-
-export async function seedDefaultAdminAction() {
-  const defaultEmail = process.env.ADMIN_DEFAULT_EMAIL || 'admin@ctcorp.id'
-  const defaultPass = process.env.ADMIN_DEFAULT_PASSWORD || 'admin123'
-  try {
-    await upsertAdminAuthUser(defaultEmail, defaultPass)
-  } catch (error) {
-    console.error('[Seed Admin Error]', error)
-    redirect('/admin/login?serviceKey=1')
-  }
-  redirect('/admin/login?seeded=1')
 }
 
 export async function logoutAction() {

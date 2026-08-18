@@ -1,5 +1,5 @@
 import { getAdminSession } from '@/lib/auth'
-import { loginAction, seedDefaultAdminAction } from '../actions'
+import { loginAction } from '../actions'
 import { redirect } from 'next/navigation'
 
 export default async function AdminLoginPage(props) {
@@ -12,19 +12,13 @@ export default async function AdminLoginPage(props) {
     <main style={{ minHeight: '100vh', background: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
       <div style={{ width: '100%', maxWidth: '440px', background: 'white', padding: '40px 32px', borderRadius: '12px', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}>
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-          <h1 style={{ fontSize: '1.75rem', marginBottom: '8px' }}>Admin CT Corp</h1>
+          <h1 style={{ fontSize: '1.75rem', marginBottom: '8px' }}>Admin PT. Iskandar Group Indonesia</h1>
           <p style={{ color: 'var(--color-gray)' }}>Masuk untuk mengelola konten website</p>
         </div>
 
         {searchParams?.error === '1' && (
           <div style={{ padding: '12px', marginBottom: '20px', borderRadius: '6px', background: '#fee2e2', color: '#991b1b', fontSize: '0.9rem' }}>
             Email atau kata sandi salah. Silakan coba lagi.
-          </div>
-        )}
-
-        {searchParams?.seeded === '1' && (
-          <div style={{ padding: '12px', marginBottom: '20px', borderRadius: '6px', background: '#d1fae5', color: '#065f46', fontSize: '0.9rem' }}>
-            Admin default berhasil dibuat. Masuk dengan <strong>admin@ctcorp.id</strong> / <strong>admin123</strong>
           </div>
         )}
 
@@ -47,14 +41,6 @@ export default async function AdminLoginPage(props) {
           </div>
           <button type="submit" className="btn" style={{ width: '100%' }}>Masuk</button>
         </form>
-
-        <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '0.85rem', color: 'var(--color-gray)' }}>
-          <form action={seedDefaultAdminAction} style={{ display: 'inline' }}>
-            <button type="submit" style={{ background: 'none', border: 'none', color: 'var(--color-secondary)', cursor: 'pointer', textDecoration: 'underline' }}>
-              Reset / Buat Admin Default
-            </button>
-          </form>
-        </div>
       </div>
     </main>
   )

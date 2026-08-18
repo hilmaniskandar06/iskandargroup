@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers'
 import crypto from 'crypto'
 
-const SESSION_COOKIE = 'ctcorp_admin_session'
-const SECRET = process.env.SESSION_SECRET || 'ctcorp-dev-secret-change-me'
+const SESSION_COOKIE = 'iskandargroup_admin_session'
+const SECRET = process.env.SESSION_SECRET || 'iskandargroup-dev-secret-change-me'
 
 export function signSession(payload) {
   const data = Buffer.from(JSON.stringify(payload)).toString('base64url')

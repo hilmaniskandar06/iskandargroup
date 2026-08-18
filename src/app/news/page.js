@@ -11,7 +11,7 @@ export default async function NewsPage() {
       <section className="section-primary" style={{ padding: '80px 0 60px 0' }}>
         <div className="container">
           <h1 style={{ fontSize: '3rem', marginBottom: '12px' }}>Berita & Siaran Pers</h1>
-          <p style={{ fontSize: '1.1rem', opacity: 0.85 }}>Pengumuman resmi, siaran pers, dan informasi terkini CT Corp.</p>
+          <p style={{ fontSize: '1.1rem', opacity: 0.85 }}>Pengumuman resmi, siaran pers, dan informasi terkini PT. Iskandar Group Indonesia.</p>
         </div>
       </section>
 

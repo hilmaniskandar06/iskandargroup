@@ -8,7 +8,7 @@ export default async function TermsAndConditions() {
     // default
   }
 
-  const text = content?.termsText || `Legal Notices\n\nThis web site is provided by CT Corp and may be used for informational purposes only. By using the site or downloading materials from the site, you agree to abide by the terms and conditions set forth in this notice. If you do not agree to abide by these terms and conditions do not use the site or download materials from the site.\n\nLimited License\nSubject to the terms and conditions set forth in this Agreement, CT Corp grants you a non-exclusive, non-transferable, limited right to access, use and display this site and the materials thereon. You agree not to interrupt or attempt to interrupt the operation of the site in any way.`;
+  const text = content?.termsText || `Pemberitahuan Hukum\n\nSitus web ini disediakan oleh PT. Iskandar Group Indonesia untuk keperluan informasi. Dengan menggunakan situs ini atau mengunduh materi dari situs ini, Anda menyetujui untuk mematuhi syarat dan ketentuan yang tercantum dalam pemberitahuan ini. Jika Anda tidak setuju dengan syarat dan ketentuan ini, jangan gunakan situs ini atau unduh materi dari situs ini.\n\nLisensi Terbatas\nDengan tunduk pada syarat dan ketentuan yang tercantum dalam perjanjian ini, PT. Iskandar Group Indonesia memberikan Anda lisensi non-eksklusif, tidak dapat dialihkan, dan terbatas untuk mengakses, menggunakan, dan menampilkan situs ini beserta materi yang ada di dalamnya. Anda setuju untuk tidak mengganggu atau mencoba mengganggu operasi situs ini dengan cara apa pun.`;
 
   return (
     <main>

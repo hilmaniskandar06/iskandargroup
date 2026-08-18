@@ -14,7 +14,7 @@ export default async function Home() {
   const data = content || {
     homeTitle: 'Untuk Indonesia\nyang lebih baik',
     homeDesc: 'Bisnis Kami',
-    homeSubDesc: 'CT Corp adalah konglomerasi terdiversifikasi terkemuka yang berpusat pada konsumen, mempekerjakan lebih dari 100.000 karyawan di seluruh Indonesia.',
+    homeSubDesc: 'PT. Iskandar Group Indonesia adalah konglomerasi terdiversifikasi terkemuka yang berpusat pada konsumen, mempekerjakan lebih dari 100.000 karyawan di seluruh Indonesia.',
     homeHeroImg: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
   };
 
@@ -49,7 +49,7 @@ export default async function Home() {
           }}>
             {businesses.map((biz) => (
               <a
-                href="/business"
+                href={`/who-we-are#category-${biz.id}`}
                 key={biz.id}
                 aria-label={biz.title}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block', borderRadius: '4px', overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.10)', transition: 'transform .2s, box-shadow .2s', background: '#111' }}

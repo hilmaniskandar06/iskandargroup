@@ -30,16 +30,16 @@ const TABS = [
 const defaults = {
   homeTitle: 'Untuk Indonesia\nyang lebih baik',
   homeDesc: 'Our Businesses',
-  homeSubDesc: 'CT Corp is Indonesia\'s leading consumer-centric diversified group & ecosystem employing more than 100,000 people regionally.',
+  homeSubDesc: 'PT. Iskandar Group Indonesia adalah konglomerasi terdiversifikasi terkemuka yang berpusat pada konsumen, mempekerjakan lebih dari 100.000 karyawan di seluruh Indonesia.',
   homeHeroImg: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
   siteLogo: '',
   statsBgImg: '',
-  whoWeAreText: 'Our Founder Prof. Dr. Chairul Tanjung grew CT Corp to be a massive business ecosystem.',
+  whoWeAreText: 'PT. Iskandar Group Indonesia adalah grup usaha terdiversifikasi yang tumbuh menjadi ekosistem bisnis besar di Indonesia.',
   whoWeAreImg: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop',
-  privacyText: 'Protecting the security and privacy of your personal data is important to CT Corp.',
-  termsText: 'This web site is provided by CT Corp and may be used for informational purposes only.',
-  businessText: 'Our diversified business verticals.',
-  investorText: 'Investor relations information.',
+  privacyText: 'Melindungi keamanan dan privasi data pribadi Anda adalah hal penting bagi PT. Iskandar Group Indonesia.',
+  termsText: 'Situs web ini disediakan oleh PT. Iskandar Group Indonesia untuk keperluan informasi.',
+  businessText: 'Lini bisnis terdiversifikasi kami.',
+  investorText: 'Informasi hubungan investor.',
 }
 
 export default async function AdminPage(props) {
@@ -78,7 +78,7 @@ export default async function AdminPage(props) {
       <div className="container" style={{ maxWidth: '1200px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <h2 style={{ marginBottom: '4px' }}>Panel Admin CT CORP</h2>
+            <h2 style={{ marginBottom: '4px' }}>Panel Admin PT. ISKANDAR GROUP INDONESIA</h2>
             <p style={{ color: '#666' }}>Masuk sebagai <strong>{session.email}</strong> ({session.role})</p>
           </div>
           <form action={logoutAction}>

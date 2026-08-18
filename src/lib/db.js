@@ -21,16 +21,16 @@ const TABLES = {
 const DEFAULT_PAGE_CONTENT = {
   homeTitle: 'Untuk Indonesia\nyang lebih baik',
   homeDesc: 'Our Businesses',
-  homeSubDesc: "CT Corp is Indonesia's leading consumer-centric diversified group & ecosystem employing more than 100,000 people regionally.",
+  homeSubDesc: "PT. Iskandar Group Indonesia adalah konglomerasi terdiversifikasi terkemuka yang berpusat pada konsumen, mempekerjakan lebih dari 100.000 karyawan di seluruh Indonesia.",
   homeHeroImg: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop',
   siteLogo: '',
   statsBgImg: '',
-  whoWeAreText: 'Our Founder Prof. Dr. Chairul Tanjung grew CT Corp to be a massive business ecosystem.',
+  whoWeAreText: 'PT. Iskandar Group Indonesia adalah grup usaha terdiversifikasi yang tumbuh menjadi ekosistem bisnis besar di Indonesia.',
   whoWeAreImg: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop',
-  privacyText: 'Protecting the security and privacy of your personal data is important to CT Corp.',
-  termsText: 'This web site is provided by CT Corp and may be used for informational purposes only.',
-  businessText: 'Our diversified business verticals.',
-  investorText: 'Investor relations information.',
+  privacyText: 'Melindungi keamanan dan privasi data pribadi Anda adalah hal penting bagi PT. Iskandar Group Indonesia.',
+  termsText: 'Situs web ini disediakan oleh PT. Iskandar Group Indonesia untuk keperluan informasi.',
+  businessText: 'Lini bisnis terdiversifikasi kami.',
+  investorText: 'Informasi hubungan investor.',
 }
 
 function dbError(error) {
@@ -434,42 +434,5 @@ export async function signInAdminUser(email, password) {
     email: data.user.email,
     role: 'admin',
     name: data.user.user_metadata?.name || data.user.email,
-  }
-}
-
-export async function upsertAdminAuthUser(email, password) {
-  const name = 'Default Admin'
-  const { data: listData, error: listError } = await supabase.auth.admin.listUsers()
-  if (listError) throw dbError(listError)
-
-  const existing = listData.users.find((user) => user.email === email)
-  if (existing) {
-    const { data, error } = await supabase.auth.admin.updateUserById(existing.id, {
-      password,
-      email_confirm: true,
-      user_metadata: { name },
-    })
-    if (error) throw dbError(error)
-    return {
-      id: data.user.id,
-      email: data.user.email,
-      role: 'admin',
-      name,
-    }
-  }
-
-  const { data, error } = await supabase.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: true,
-    user_metadata: { name },
-  })
-  if (error) throw dbError(error)
-
-  return {
-    id: data.user.id,
-    email: data.user.email,
-    role: 'admin',
-    name,
   }
 }

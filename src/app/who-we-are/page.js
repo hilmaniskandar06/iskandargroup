@@ -10,7 +10,7 @@ export default async function WhoWeAre() {
     // default
   }
 
-  const text = content?.whoWeAreText || "CT Corp didirikan oleh Prof. Dr. (H.C.) Chairul Tanjung, bermula dari sebuah bisnis skala kecil yang kini telah bertransformasi menjadi salah satu konglomerasi bisnis terbesar dan paling terintegrasi di Indonesia.\n\nSaat ini, CT Corp adalah ekosistem terdiversifikasi terkemuka di Indonesia yang mempekerjakan lebih dari 100.000 karyawan. Dengan fokus utama pada kebutuhan konsumen, grup ini memegang posisi kepemimpinan dalam pilar bisnis utama: Layanan Keuangan, Media & Hiburan, Ritel & Gaya Hidup, serta Perhotelan dan Sumber Daya Alam.\n\nCT Corp merupakan induk perusahaan dari Mega Corpora, Trans Corpora, dan CT Global Resources. Kami berkomitmen untuk terus berinovasi dan memberikan dampak positif bagi kemajuan bangsa Indonesia melalui inisiatif bisnis berkelanjutan dan Corporate Social Responsibility (CSR).";
+  const text = content?.whoWeAreText || "PT. Iskandar Group Indonesia adalah konglomerasi terdiversifikasi terkemuka yang berpusat pada konsumen, mempekerjakan lebih dari 100.000 karyawan di seluruh Indonesia.\n\nSaat ini, PT. Iskandar Group Indonesia adalah ekosistem terdiversifikasi terkemuka di Indonesia. Dengan fokus utama pada kebutuhan konsumen, grup ini memegang posisi kepemimpinan dalam pilar bisnis utama: Layanan Keuangan, Media & Hiburan, Ritel & Gaya Hidup, serta Perhotelan dan Sumber Daya Alam.\n\nPT. Iskandar Group Indonesia merupakan induk perusahaan dari berbagai entitas bisnis strategis. Kami berkomitmen untuk terus berinovasi dan memberikan dampak positif bagi kemajuan bangsa Indonesia melalui inisiatif bisnis berkelanjutan dan Corporate Social Responsibility (CSR).";
   const founderImg = content?.whoWeAreImg || "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop";
 
   return (
@@ -35,13 +35,13 @@ export default async function WhoWeAre() {
           <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '50px' }}>
             <h2 style={{ fontSize: '2.25rem', marginBottom: '8px' }}>Bisnis &amp; Ekosistem Kami</h2>
             <p style={{ color: 'var(--color-gray)', marginBottom: '40px', maxWidth: '700px' }}>
-              CT Corp hadir di berbagai sektor strategis. Klik logo brand untuk mengunjungi situs resminya.
+              PT. Iskandar Group Indonesia hadir di berbagai sektor strategis. Klik logo brand untuk mengunjungi situs resminya.
             </p>
 
             {businesses.map(cat => {
               const hasItems = cat.items && cat.items.length > 0
               return (
-                <div key={cat.id} style={{ marginBottom: '48px' }}>
+                <div key={cat.id} id={`category-${cat.id}`} style={{ marginBottom: '48px', scrollMarginTop: '100px' }}>
                   {/* Category header */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
                     <h3 style={{ fontSize: '1.4rem', fontWeight: 700, margin: 0 }}>{cat.title}</h3>

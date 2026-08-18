@@ -5,7 +5,7 @@ export default function InvestorPage() {
         <div className="container">
           <h1 style={{ fontSize: '3rem', marginBottom: '20px' }}>Hubungan Investor</h1>
           <p style={{ fontSize: '1.1rem', opacity: 0.85, maxWidth: '700px' }}>
-            Informasi keterbukaan, laporan keuangan, dan hubungan investor CT Corp.
+            Informasi keterbukaan, laporan keuangan, dan hubungan investor PT. Iskandar Group Indonesia.
           </p>
         </div>
       </section>
